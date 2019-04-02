@@ -3,7 +3,7 @@
 struct heap* headNextFit;
 
 void initFreeList(){
-        freeList=(struct heap*)malloc(sizeof(struct heap));                            //if initially free list is considered as one whole block of memory
+        freeList=(struct heap*)malloc(sizeof(struct heap));                            //initially free list is considered as one whole block of memory
         freeList->blockSize = initialSize;
         freeList->next=NULL;
         headNextFit=freeList;
@@ -63,10 +63,13 @@ void allocNextFit(int allocSize){
 
 void allocBestFit(int allocSize){
     struct heap* head=freeList;
-    struct heap* min=freeList;
-    while(head->next!=NULL){
-        if(head->blockSize >= allocSize && min->blockSize > head->blockSize){
-            min=head;
+    struct heap* min=NULL;
+    while(head!=NULL){
+        if(min==NULL && head->blockSize >= allocSize){
+            min = head;
+        }
+        else if((head->blockSize >= allocSize)&&(min->blockSize > head->blockSize)){
+            min = head;
         }
         head=head->next;
     }
